@@ -1,10 +1,20 @@
 import { AppShell } from "@/components/app-shell";
 import { SectionCard } from "@/components/section-card";
+import { YouTubeConnectionCard } from "@/components/youtube-connection-card";
 import { getMissingCriticalEnv } from "@/lib/env";
 import { securityControls, tokenPolicies } from "@/lib/mock-data";
+import { getYouTubeConnectionStatus } from "@/lib/youtube/service";
 
-export default function SettingsPage() {
+export default async function SettingsPage({
+  searchParams,
+}: {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const missingEnv = getMissingCriticalEnv();
+  const youtubeStatus = await getYouTubeConnectionStatus();
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
+  const youtubeBanner =
+    typeof resolvedSearchParams?.youtube === "string" ? resolvedSearchParams.youtube : undefined;
 
   return (
     <AppShell
@@ -44,6 +54,28 @@ export default function SettingsPage() {
           ) : (
             <p className="muted">Critical environment values are present.</p>
           )}
+        </SectionCard>
+      </div>
+
+      <div style={{ marginTop: 24 }}>
+        <SectionCard
+          title="YouTube integration"
+          description="OAuth and live channel analytics are now wired through secure server-side routes."
+        >
+          <div className="hero-actions" style={{ marginBottom: 20 }}>
+            <a className="button" href="/api/auth/youtube/start">
+              Connect YouTube
+            </a>
+            <form action="/api/auth/youtube/disconnect" method="post">
+              <button className="button secondary" type="submit">
+                Disconnect
+              </button>
+            </form>
+            <a className="button secondary" href="/api/youtube/connection">
+              View JSON status
+            </a>
+          </div>
+          <YouTubeConnectionCard status={youtubeStatus} banner={youtubeBanner} />
         </SectionCard>
       </div>
 

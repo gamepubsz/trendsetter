@@ -2,10 +2,13 @@ import Link from "next/link";
 import { AppShell } from "@/components/app-shell";
 import { SectionCard } from "@/components/section-card";
 import { StatCard } from "@/components/stat-card";
+import { YouTubeConnectionCard } from "@/components/youtube-connection-card";
 import { getDashboardData } from "@/lib/domain/dashboard";
+import { getYouTubeConnectionStatus } from "@/lib/youtube/service";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
   const dashboard = getDashboardData();
+  const youtubeStatus = await getYouTubeConnectionStatus();
 
   return (
     <AppShell title="Unified dashboard" description={dashboard.headline}>
@@ -77,6 +80,15 @@ export default function DashboardPage() {
               </article>
             ))}
           </div>
+        </SectionCard>
+      </div>
+
+      <div style={{ marginTop: 24 }}>
+        <SectionCard
+          title="Live YouTube connection"
+          description="Once connected, this card reflects real channel identity and rolling analytics."
+        >
+          <YouTubeConnectionCard status={youtubeStatus} />
         </SectionCard>
       </div>
     </AppShell>

@@ -8,6 +8,7 @@ Trend-aware operating system for creating, researching, operating, and optimizin
 - **Multi-channel portfolio view** for comparing audience, views, and revenue
 - **Cross-platform trend research view** seeded with signals from YouTube, X, Reddit, and Google Trends
 - **Content planning endpoint** at `POST /api/ideas`
+- **YouTube OAuth + live analytics integration routes** for connecting a real channel
 - **Token budget policies** to keep LLM usage low by default
 - **Security helpers** for secret redaction, scope checking, and environment validation
 - **Prisma schema** for users, workspaces, channels, trend snapshots, content ideas, analytics, jobs, and OAuth tokens
@@ -53,6 +54,40 @@ This repository is structured around five product loops:
 
 4. Open `http://localhost:3000`
 
+## YouTube integration setup
+
+To connect a real YouTube channel, configure a Google Cloud OAuth client:
+
+1. Create a Google Cloud project and enable:
+   - **YouTube Data API v3**
+   - **YouTube Analytics API**
+2. Create an OAuth 2.0 Web Application credential.
+3. Add this redirect URI in Google Cloud:
+
+   ```text
+   http://localhost:3000/api/auth/youtube/callback
+   ```
+
+4. Fill these values in `.env.local`:
+
+   ```bash
+   GOOGLE_CLIENT_ID="your-google-client-id"
+   GOOGLE_CLIENT_SECRET="your-google-client-secret"
+   YOUTUBE_OAUTH_REDIRECT_URI="http://localhost:3000/api/auth/youtube/callback"
+   ENCRYPTION_KEY="a-32-character-or-longer-random-secret"
+   NEXT_PUBLIC_APP_URL="http://localhost:3000"
+   ```
+
+5. Open `/settings` and click **Connect YouTube**
+
+### Current OAuth behavior
+
+- requests `youtube.readonly` and `yt-analytics.readonly`
+- stores the returned OAuth session in an **encrypted httpOnly cookie**
+- fetches channel identity plus a rolling **28-day analytics summary**
+
+This is a practical development scaffold. For production, move refresh tokens from cookies into your database and rotate encryption keys through your secret manager.
+
 ## Available scripts
 
 - `npm run dev` - start the local app
@@ -87,13 +122,14 @@ See `lib/domain/token-budget.ts` for the current policy logic.
 - `app/` - Next.js pages and API routes
 - `components/` - reusable dashboard UI components
 - `lib/domain/` - recommendation, planning, and token-budget logic
+- `lib/youtube/` - OAuth, encrypted session, and YouTube API integration
 - `prisma/schema.prisma` - initial data model
 - `tests/` - focused unit tests for token and security logic
 
 ## Suggested next implementation steps
 
-1. Add Google OAuth and YouTube Data / Analytics API integration
+1. Persist encrypted refresh tokens and channel metadata in PostgreSQL
 2. Replace seed data with scheduled collectors and a queue-backed worker
-3. Persist ideas and analytics snapshots in PostgreSQL
-4. Add authentication and workspace permissions
-5. Introduce competitor benchmarking and creator revenue forecasting
+3. Add authentication and workspace permissions
+4. Introduce competitor benchmarking and creator revenue forecasting
+5. Add upload planning, thumbnail briefs, and publishing workflows

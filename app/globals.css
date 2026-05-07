@@ -33,6 +33,10 @@ a {
   text-decoration: none;
 }
 
+button {
+  font: inherit;
+}
+
 body {
   min-height: 100vh;
 }
@@ -219,6 +223,7 @@ body {
   padding: 10px 14px;
   background: rgba(96, 165, 250, 0.14);
   color: var(--text);
+  cursor: pointer;
 }
 
 .button.secondary {
