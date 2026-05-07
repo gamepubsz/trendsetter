@@ -9,11 +9,13 @@ const envSchema = z.object({
   NEXT_PUBLIC_APP_URL: z.string().url().default("http://localhost:3000"),
 });
 
-export function parseEnv(input: NodeJS.ProcessEnv = process.env) {
+export function parseEnv(input: Record<string, string | undefined> = process.env) {
   return envSchema.parse(input);
 }
 
-export function getMissingCriticalEnv(input: NodeJS.ProcessEnv = process.env): string[] {
+export function getMissingCriticalEnv(
+  input: Record<string, string | undefined> = process.env,
+): string[] {
   const parsed = envSchema.safeParse(input);
 
   if (!parsed.success) {
