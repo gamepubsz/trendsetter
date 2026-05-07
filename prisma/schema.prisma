@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MonetizationStage {
+  building
+  eligible
+  monetized
+}
+
+enum JobStatus {
+  queued
+  running
+  succeeded
+  failed
+}
+
+model User {
+  id          String      @id @default(cuid())
+  email       String      @unique
+  name        String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  workspaces  Workspace[] @relation("WorkspaceMembers")
+  oauthTokens OAuthToken[]
+}
+
+model Workspace {
+  id                 String             @id @default(cuid())
+  name               String
+  ownerId            String
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  owner              User               @relation("WorkspaceMembers", fields: [ownerId], references: [id])
+  channels           Channel[]
+  trendSnapshots     TrendSnapshot[]
+  contentIdeas       ContentIdea[]
+  analyticsSnapshots AnalyticsSnapshot[]
+  jobRuns            JobRun[]
+}
+
+model Channel {
+  id                 String              @id @default(cuid())
+  workspaceId        String
+  youtubeChannelId   String              @unique
+  name               String
+  niche              String
+  audience           String
+  monetizationStage  MonetizationStage   @default(building)
+  subscribers        Int                 @default(0)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  workspace          Workspace           @relation(fields: [workspaceId], references: [id])
+  analyticsSnapshots AnalyticsSnapshot[]
+  contentIdeas       ContentIdea[]
+}
+
+model OAuthToken {
+  id             String   @id @default(cuid())
+  userId         String
+  provider       String
+  accountEmail   String?
+  encryptedToken String
+  encryptedMeta  String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  user           User     @relation(fields: [userId], references: [id])
+}
+
+model TrendSnapshot {
+  id               String   @id @default(cuid())
+  workspaceId      String
+  platform         String
+  topic            String
+  summary          String
+  keywords         String[]
+  velocityScore    Int
+  engagementScore  Int
+  monetizationFit  Int
+  capturedAt       DateTime @default(now())
+  workspace        Workspace @relation(fields: [workspaceId], references: [id])
+}
+
+model ContentIdea {
+  id                String   @id @default(cuid())
+  workspaceId       String
+  channelId         String?
+  title             String
+  angle             String
+  confidence        Int
+  format            String
+  sourceTrendIds    String[]
+  estimatedImpact   String
+  monetizationNote  String
+  createdAt         DateTime @default(now())
+  workspace         Workspace @relation(fields: [workspaceId], references: [id])
+  channel           Channel?  @relation(fields: [channelId], references: [id])
+}
+
+model AnalyticsSnapshot {
+  id              String   @id @default(cuid())
+  workspaceId     String
+  channelId       String
+  capturedAt      DateTime @default(now())
+  views           Int
+  watchTimeHours  Float
+  averageCtr      Float
+  revenueUsd      Float
+  subscriberDelta Int
+  workspace       Workspace @relation(fields: [workspaceId], references: [id])
+  channel         Channel   @relation(fields: [channelId], references: [id])
+}
+
+model JobRun {
+  id          String    @id @default(cuid())
+  workspaceId String
+  jobType     String
+  status      JobStatus @default(queued)
+  startedAt   DateTime?
+  finishedAt  DateTime?
+  detail      String?
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+}

@@ -1,0 +1,49 @@
+{
+  "name": "trendsetter",
+  "version": "0.1.0",
+  "description": "MVP scaffold for a multi-channel YouTube operating system.",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "prisma:validate": "DATABASE_URL=\"postgresql://trendsetter:trendsetter@localhost:5432/trendsetter?schema=public\" prisma validate",
+    "verify": "npm run lint && npm run typecheck && npm run test && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gamepubsz/trendsetter.git"
+  },
+  "keywords": [
+    "youtube",
+    "dashboard",
+    "analytics",
+    "ai",
+    "nextjs"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gamepubsz/trendsetter/issues"
+  },
+  "homepage": "https://github.com/gamepubsz/trendsetter#readme",
+  "dependencies": {
+    "@prisma/client": "^7.8.0",
+    "next": "^16.2.5",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.5",
+    "prisma": "^7.8.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.5"
+  }
+}
