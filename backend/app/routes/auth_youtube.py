@@ -17,8 +17,6 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/v1/auth/youtube", tags=["auth"])
 
-YOUTUBE_READONLY = "https://www.googleapis.com/auth/youtube.readonly"
-
 
 def _client_config() -> dict:
     return {
@@ -38,21 +36,32 @@ def _purge_expired_states(db: Session) -> None:
     db.commit()
 
 
+def _dashboard_url(locale: str, query: str) -> str:
+    loc = locale if locale in ("en", "zh") else "en"
+    base = f"{settings.frontend_base_url.rstrip('/')}/{loc}/dashboard"
+    q = query.lstrip("?")
+    return f"{base}?{q}" if q else base
+
+
 @router.get("/start")
-def start_oauth(db: Session = Depends(get_db)) -> RedirectResponse:
+def start_oauth(
+    db: Session = Depends(get_db),
+    locale: str = Query(default="en", description="Dashboard locale after OAuth (en or zh)."),
+) -> RedirectResponse:
     if not settings.oauth_configured():
         raise HTTPException(
             status_code=503,
             detail="Google OAuth is not configured. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET.",
         )
     _purge_expired_states(db)
+    loc = locale if locale in ("en", "zh") else "en"
     state = secrets.token_urlsafe(32)
-    db.add(OAuthState(state=state))
+    db.add(OAuthState(state=state, locale=loc))
     db.commit()
 
     flow = Flow.from_client_config(
         _client_config(),
-        scopes=[YOUTUBE_READONLY],
+        scopes=settings.youtube_scopes_list,
         redirect_uri=settings.oauth_redirect_uri,
     )
     authorization_url, _ = flow.authorization_url(
@@ -73,10 +82,16 @@ def oauth_callback(
 ) -> RedirectResponse:
     if error:
         logger.warning("OAuth error from provider (no secrets logged).")
-        return RedirectResponse(
-            url=f"{settings.frontend_base_url}/en/dashboard?youtube=error",
-            status_code=302,
-        )
+        loc = "en"
+        if state:
+            row_err = db.query(OAuthState).filter(OAuthState.state == state).one_or_none()
+            if row_err is not None:
+                if row_err.locale in ("en", "zh"):
+                    loc = row_err.locale
+                db.delete(row_err)
+                db.commit()
+        return RedirectResponse(url=_dashboard_url(loc, "?youtube=error"), status_code=302)
+
     if not code or not state:
         raise HTTPException(status_code=400, detail="Missing code or state.")
     if not settings.oauth_configured():
@@ -86,12 +101,13 @@ def oauth_callback(
     if row is None:
         raise HTTPException(status_code=400, detail="Invalid or expired state.")
 
+    redirect_locale = row.locale if row.locale in ("en", "zh") else "en"
     db.delete(row)
     db.commit()
 
     flow = Flow.from_client_config(
         _client_config(),
-        scopes=[YOUTUBE_READONLY],
+        scopes=settings.youtube_scopes_list,
         redirect_uri=settings.oauth_redirect_uri,
     )
     try:
@@ -99,17 +115,21 @@ def oauth_callback(
     except Exception:
         logger.exception("Token exchange failed.")
         return RedirectResponse(
-            url=f"{settings.frontend_base_url}/en/dashboard?youtube=error",
+            url=_dashboard_url(redirect_locale, "?youtube=error"),
             status_code=302,
         )
 
     creds = flow.credentials
     if not creds.refresh_token:
-        logger.error("No refresh_token returned; revoke app access in Google account and retry with prompt=consent.")
+        logger.error(
+            "No refresh_token returned; revoke app access in Google account and retry with prompt=consent."
+        )
         return RedirectResponse(
-            url=f"{settings.frontend_base_url}/en/dashboard?youtube=no_refresh",
+            url=_dashboard_url(redirect_locale, "?youtube=no_refresh"),
             status_code=302,
         )
+
+    granted = creds.scopes or settings.youtube_scopes_list
 
     db.query(YouTubeCredential).delete()
     payload = YouTubeCredential(
@@ -117,12 +137,12 @@ def oauth_callback(
         token_uri=creds.token_uri or "https://oauth2.googleapis.com/token",
         client_id=settings.google_client_id,
         client_secret=settings.google_client_secret,
-        scopes=" ".join(creds.scopes or [YOUTUBE_READONLY]),
+        scopes=" ".join(granted),
     )
     db.add(payload)
     db.commit()
 
     return RedirectResponse(
-        url=f"{settings.frontend_base_url}/en/dashboard?youtube=connected",
+        url=_dashboard_url(redirect_locale, "?youtube=connected"),
         status_code=302,
     )

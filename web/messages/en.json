@@ -9,7 +9,7 @@
   },
   "dashboard": {
     "headline": "Channel overview",
-    "sub": "English-first content strategy. Connect YouTube to load your channels (read-only).",
+    "sub": "English-first content strategy. Connect YouTube to manage channels (read, upload, and metadata where granted).",
     "connect": "Connect YouTube",
     "checkingApi": "Checking API…",
     "apiDown": "Backend unreachable. Start the API on port 8000.",
@@ -18,14 +18,23 @@
     "notConnected": "Not connected",
     "channelsTitle": "Your channels",
     "noChannels": "No channels returned (or still loading).",
-    "trendsTitle": "Cross-platform trends",
-    "trendsBody": "Planned: compliant feeds only (official APIs and public metadata). No grey scraping.",
+    "scopesTitle": "Granted OAuth scopes",
+    "scopesEmpty": "None (not connected).",
+    "trendsTitle": "Reddit trends (official API)",
+    "trendsBody": "Hot posts from a public subreddit via Reddit’s OAuth client-credentials flow. Cached briefly to reduce API calls.",
+    "trendsLoading": "Loading Reddit trends…",
+    "trendsNotConfigured": "Reddit is not configured. Set REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, and REDDIT_USER_AGENT in .env.",
+    "trendsError": "Could not load Reddit trends.",
+    "trendsEmpty": "No posts returned.",
+    "trendsScore": "score",
+    "trendsOpen": "Open",
     "editTitle": "Auto edit pipeline",
     "editBody": "Planned: Whisper transcripts, FFmpeg cuts, export to an editor-friendly format.",
-    "oauthNote": "OAuth opens Google in this window. Tokens stay in your local SQLite database.",
+    "oauthNote": "OAuth opens Google in this window. Tokens stay in your local SQLite database. You return to the same language you started from.",
     "queryHint": "URL flags: youtube=connected | youtube=error | youtube=no_refresh",
     "oauthError": "OAuth error from Google.",
-    "oauthNoRefresh": "No refresh token. In Google Account settings, remove this app’s access and connect again."
+    "oauthNoRefresh": "No refresh token. In Google Account settings, remove this app’s access and connect again.",
+    "apiHint": "Metadata updates use PATCH /v1/youtube/videos/{id} (see README)."
   },
   "locale": {
     "switch": "中文"

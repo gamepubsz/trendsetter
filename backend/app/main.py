@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.db.session import init_db
-from app.routes import auth_youtube, health, youtube_data
+from app.routes import auth_youtube, health, trends_reddit, youtube_data
 
 
 @asynccontextmanager
@@ -29,3 +29,4 @@ app.add_middleware(
 app.include_router(health.router)
 app.include_router(auth_youtube.router)
 app.include_router(youtube_data.router)
+app.include_router(trends_reddit.router)

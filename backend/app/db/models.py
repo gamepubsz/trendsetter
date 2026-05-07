@@ -15,6 +15,7 @@ class OAuthState(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     state: Mapped[str] = mapped_column(String(128), unique=True, index=True)
+    locale: Mapped[str] = mapped_column(String(8), default="en")
     created_at: Mapped[dt.datetime] = mapped_column(
         DateTime(timezone=True), default=lambda: dt.datetime.now(dt.UTC)
     )
