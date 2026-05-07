@@ -1,4 +1,4 @@
-import { google } from "googleapis";
+import { google, youtubeAnalytics_v2, youtube_v3 } from "googleapis";
 import { cookies } from "next/headers";
 import { getMissingYouTubeOAuthEnv } from "@/lib/env";
 import { requireScopes } from "@/lib/security";
@@ -22,9 +22,7 @@ function parseMetric(value: unknown): number {
 }
 
 function mapChannel(
-  item: NonNullable<
-    Awaited<ReturnType<ReturnType<typeof google.youtube>["channels"]["list"]>>["data"]["items"]
-  >[number],
+  item: youtube_v3.Schema$Channel,
 ): YouTubeChannelSnapshot {
   const statistics = item.statistics;
   const snippet = item.snippet;
@@ -46,7 +44,7 @@ function mapChannel(
 }
 
 function mapAnalyticsRow(
-  headers: Array<{ name?: string | null }>,
+  headers: youtubeAnalytics_v2.Schema$ResultTableColumnHeader[],
   row: unknown[] | undefined,
   startDate: string,
   endDate: string,
