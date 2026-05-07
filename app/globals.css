@@ -88,6 +88,7 @@ select {
 
 .hero-card,
 .metric-card,
+.strategy-card,
 .panel,
 .channel-card,
 .trend-card,
@@ -129,12 +130,21 @@ select {
   margin-bottom: 24px;
 }
 
-.metric-card {
+.strategy-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.metric-card,
+.strategy-card {
   border-radius: 22px;
   padding: 22px;
 }
 
-.metric-card strong {
+.metric-card strong,
+.strategy-card strong {
   display: block;
   margin: 10px 0;
   font-size: 2rem;
@@ -142,6 +152,7 @@ select {
 }
 
 .metric-card p,
+.strategy-card p,
 .hero-card p,
 .panel-heading p,
 .channel-card p,
@@ -231,6 +242,37 @@ select {
 .stage.producing {
   color: #00131b;
   background: var(--accent);
+}
+
+.stage.ready_for_review {
+  color: #1c1500;
+  background: var(--warning);
+}
+
+.approval {
+  display: inline-flex;
+  width: fit-content;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.approval.draft {
+  color: var(--text);
+  background: var(--panel-strong);
+}
+
+.approval.needs_review {
+  color: #1c1500;
+  background: var(--warning);
+}
+
+.approval.approved,
+.approval.scheduled {
+  color: #05170f;
+  background: var(--accent-strong);
 }
 
 .mini-grid {
@@ -353,6 +395,7 @@ dd {
   .hero,
   .two-column,
   .metric-grid,
+  .strategy-grid,
   .plan-grid {
     grid-template-columns: 1fr;
   }

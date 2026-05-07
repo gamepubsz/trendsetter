@@ -1,4 +1,12 @@
-export type ChannelStage = "researching" | "producing" | "scheduled" | "published";
+export type ChannelStage = "researching" | "producing" | "ready_for_review" | "scheduled" | "published";
+
+export type ProductStrategy = {
+  primaryContentLanguage: "English";
+  primaryTrendSource: "YouTube";
+  publishingMode: "auto_schedule_after_approval";
+  monetizationPriority: ["ads", "affiliate"];
+  approvalRule: string;
+};
 
 export type Channel = {
   id: string;
@@ -29,6 +37,8 @@ export type ContentPlan = {
   channelId: string;
   title: string;
   stage: ChannelStage;
+  approvalStatus: "draft" | "needs_review" | "approved" | "scheduled";
+  autoScheduleAfterApproval: boolean;
   confidence: number;
   estimatedViews: string;
   monetizationPath: string;

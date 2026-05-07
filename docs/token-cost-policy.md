@@ -5,13 +5,13 @@ The product should reduce model spend by making expensive analysis conditional i
 ## Default workflow
 
 1. **Ingest raw signals**
-   - Pull topic candidates from social/search APIs.
+   - Pull topic candidates from YouTube first.
    - Store raw payload hashes and timestamps.
    - Do not send unchanged payloads back to model providers.
 
 2. **Cheap triage**
    - Use a low-cost model or deterministic scoring for summaries.
-   - Score each trend by momentum, competition, audience intent, monetization fit, and channel fit.
+   - Score each trend by YouTube momentum, competition, audience intent, ad fit, affiliate fit, and channel fit.
 
 3. **Premium escalation**
    - Escalate only when:
@@ -22,6 +22,7 @@ The product should reduce model spend by making expensive analysis conditional i
 
 4. **Human approval**
    - Require review before scripts, claims, publishing, and monetization disclosures.
+   - Auto-schedule only after the approval status is recorded.
 
 ## Caching rules
 
@@ -29,6 +30,7 @@ The product should reduce model spend by making expensive analysis conditional i
 - Normalized trend summaries: 24 hours.
 - Content briefs: cache by topic fingerprint until inputs change.
 - Analytics snapshots: keep historical records and diff only new metrics.
+- YouTube API quota usage: record per job so repeated trend refreshes can be skipped.
 
 ## Safety rules
 

@@ -2,7 +2,6 @@ import {
   channels,
   contentPlans,
   safetyChecks,
-  trendSignals,
 } from "@/lib/mock-data";
 import {
   defaultCostPolicy,
@@ -10,6 +9,8 @@ import {
   shouldEscalateTrend,
 } from "@/lib/cost-controls";
 import { getReleaseReadiness } from "@/lib/security-checks";
+import { productStrategy, strategySummary } from "@/lib/product-strategy";
+import { getPrioritizedTrendSignals } from "@/lib/youtube-trends";
 
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat("en-US", {
@@ -25,6 +26,7 @@ const averageCtr =
   channels.reduce((sum, channel) => sum + channel.ctr, 0) / Math.max(channels.length, 1);
 const tokenSpend = estimateTokenSpend(contentPlans);
 const releaseReadiness = getReleaseReadiness();
+const prioritizedTrendSignals = getPrioritizedTrendSignals();
 
 export default function Home() {
   return (
@@ -34,29 +36,55 @@ export default function Home() {
           <p className="eyebrow">Trendsetter MVP</p>
           <h1>YouTube 频道增长与变现控制台</h1>
           <p className="hero-copy">
-            用一个 dashboard 管理多个频道：从跨平台趋势调查、选题创作、运营排期到广告和联盟收入分析，
-            同时内置 token 成本控制与发布前安全检查。
+            English-first content strategy, YouTube-first trend discovery, review-gated auto scheduling,
+            and monetization focused on ads plus affiliate offers.
           </p>
         </div>
         <div className="hero-card">
           <span>Release readiness</span>
           <strong>{releaseReadiness.canRelease ? "Ready with review" : "Blocked"}</strong>
           <p>
-            {releaseReadiness.needsReviewCount} 项需要人工复核，
-            {releaseReadiness.blockedCount} 项阻塞。
+            {releaseReadiness.needsReviewCount} item needs human review;{" "}
+            {releaseReadiness.blockedCount} blockers.
           </p>
         </div>
       </section>
 
+      <section className="strategy-grid" aria-label="confirmed product strategy">
+        {strategySummary.map((item) => (
+          <article className="strategy-card" key={item.label}>
+            <span>{item.label}</span>
+            <strong>{item.value}</strong>
+            <p>{item.detail}</p>
+          </article>
+        ))}
+      </section>
+
       <section className="metric-grid" aria-label="channel portfolio metrics">
-        <MetricCard label="Managed channels" value={channels.length.toString()} helper="支持多频道组合" />
-        <MetricCard label="Subscribers" value={totalSubscribers.toLocaleString()} helper="跨频道累计订阅" />
-        <MetricCard label="Monthly revenue" value={formatCurrency(totalRevenue)} helper="广告与实验性变现" />
-        <MetricCard label="Avg CTR" value={`${averageCtr.toFixed(1)}%`} helper={`${totalWatchHours.toLocaleString()} watch hours`} />
+        <MetricCard
+          label="Managed channels"
+          value={channels.length.toString()}
+          helper="Multi-channel portfolio"
+        />
+        <MetricCard
+          label="Subscribers"
+          value={totalSubscribers.toLocaleString()}
+          helper="Total English audience"
+        />
+        <MetricCard
+          label="Monthly revenue"
+          value={formatCurrency(totalRevenue)}
+          helper="Ads and affiliate focus"
+        />
+        <MetricCard
+          label="Avg CTR"
+          value={`${averageCtr.toFixed(1)}%`}
+          helper={`${totalWatchHours.toLocaleString()} watch hours`}
+        />
       </section>
 
       <section className="two-column">
-        <Panel title="频道组合" subtitle="快速判断哪个频道应该获得更多创作资源">
+        <Panel title="Channel portfolio" subtitle="Prioritize channels by English audience and revenue fit">
           <div className="stack">
             {channels.map((channel) => (
               <article className="channel-card" key={channel.id}>
@@ -87,9 +115,12 @@ export default function Home() {
           </div>
         </Panel>
 
-        <Panel title="跨平台趋势雷达" subtitle="先筛选信号，再决定是否消耗高级模型 token">
+        <Panel
+          title="YouTube-first trend radar"
+          subtitle={`Primary source: ${productStrategy.primaryTrendSource}. Other sources stay as secondary validation.`}
+        >
           <div className="stack">
-            {trendSignals.map((signal) => (
+            {prioritizedTrendSignals.map((signal) => (
               <article className="trend-card" key={signal.id}>
                 <div className="row-between">
                   <span className="source">{signal.source}</span>
@@ -108,7 +139,10 @@ export default function Home() {
         </Panel>
       </section>
 
-      <Panel title="内容生产管线" subtitle="每个视频都带有变现路径、发布时间窗和发布前检查">
+      <Panel
+        title="Content production pipeline"
+        subtitle="Each video keeps a monetization path, review status, and auto-scheduling rule"
+      >
         <div className="plan-grid">
           {contentPlans.map((plan) => {
             const channel = channels.find((item) => item.id === plan.channelId);
@@ -123,6 +157,14 @@ export default function Home() {
                 <p className="muted">{channel?.name ?? "Unassigned channel"}</p>
                 <dl>
                   <div>
+                    <dt>Approval</dt>
+                    <dd>
+                      <span className={`approval ${plan.approvalStatus}`}>
+                        {plan.approvalStatus.replaceAll("_", " ")}
+                      </span>
+                    </dd>
+                  </div>
+                  <div>
                     <dt>Estimated views</dt>
                     <dd>{plan.estimatedViews}</dd>
                   </div>
@@ -133,6 +175,14 @@ export default function Home() {
                   <div>
                     <dt>Monetization</dt>
                     <dd>{plan.monetizationPath}</dd>
+                  </div>
+                  <div>
+                    <dt>Scheduling rule</dt>
+                    <dd>
+                      {plan.autoScheduleAfterApproval
+                        ? "Auto-schedule after approval"
+                        : "Manual scheduling"}
+                    </dd>
                   </div>
                 </dl>
                 <ul>
@@ -147,7 +197,7 @@ export default function Home() {
       </Panel>
 
       <section className="two-column">
-        <Panel title="Token 成本控制" subtitle={defaultCostPolicy.goal}>
+        <Panel title="Token cost controls" subtitle={defaultCostPolicy.goal}>
           <div className="cost-card">
             <div>
               <span>Monthly budget</span>
@@ -159,13 +209,13 @@ export default function Home() {
             </div>
           </div>
           <ul className="check-list">
-            <li>默认使用 {defaultCostPolicy.defaultModelTier} 模型做趋势摘要和初筛。</li>
+            <li>Default to the {defaultCostPolicy.defaultModelTier} model tier for summaries and triage.</li>
             <li>{defaultCostPolicy.escalationRule}</li>
             <li>{defaultCostPolicy.cacheStrategy}</li>
           </ul>
         </Panel>
 
-        <Panel title="完整性与安全检查" subtitle="降低账号、密钥、合规和代码质量风险">
+        <Panel title="Integrity and safety checks" subtitle={productStrategy.approvalRule}>
           <div className="stack">
             {safetyChecks.map((check) => (
               <article className="safety-row" key={check.area}>

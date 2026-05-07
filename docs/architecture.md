@@ -1,7 +1,14 @@
 # Trendsetter MVP architecture
 
-Trendsetter is designed as a YouTube channel growth and monetization operating system.
+Trendsetter is designed as an English-first YouTube channel growth and monetization operating system.
 The first MVP is a Next.js dashboard with mocked data and explicit boundaries for future integrations.
+
+## Confirmed MVP defaults
+
+- **Primary content language:** English.
+- **First trend source:** YouTube.
+- **Publishing mode:** generate drafts, require human approval, then auto-schedule approved content.
+- **Monetization priority:** ads first, affiliate second.
 
 ## Product modules
 
@@ -11,14 +18,15 @@ The first MVP is a Next.js dashboard with mocked data and explicit boundaries fo
    - Helps decide where to allocate creative effort.
 
 2. **Trend radar**
-   - Normalizes signals from YouTube, TikTok, Reddit, Google Trends, and X.
+   - Starts with YouTube trend signals before adding TikTok, Reddit, Google Trends, and X.
    - Scores topic momentum, competition, and audience intent.
    - Escalates only the strongest opportunities to expensive model analysis.
 
 3. **Content pipeline**
    - Turns validated trends into titles, briefs, scripts, thumbnails, and publish windows.
-   - Keeps every asset attached to a monetization path such as ads, affiliate, sponsorship, or lead capture.
+   - Keeps every asset attached to an ads or affiliate monetization path.
    - Requires checks for source quality, claims, disclosures, and thumbnail readability.
+   - Allows automated scheduling only after review approval.
 
 4. **Cost controls**
    - Uses cheap models for triage and summarization.
@@ -41,9 +49,20 @@ workers/
   future scheduled jobs for trend ingestion, brief generation, and analytics sync
 ```
 
+## YouTube integration boundary
+
+The first production adapter should target:
+
+- `search.list` for topic discovery.
+- `videos.list` for view velocity and engagement.
+- `channels.list` for competitor positioning.
+- YouTube Analytics API for owned-channel feedback loops.
+
+The mocked route `/api/youtube/trends` exposes the intended shape while keeping API keys out of the MVP.
+
 When the MVP moves beyond mocked data, add durable storage before automation:
 
-- **Postgres** for channels, trend snapshots, content plans, approvals, and audit logs.
+- **Postgres** for channels, YouTube trend snapshots, content plans, approvals, and audit logs.
 - **Redis or queue service** for scheduled ingestion and generation jobs.
 - **Secrets manager** for OAuth refresh tokens and model provider keys.
 

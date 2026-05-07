@@ -12,7 +12,7 @@ export const channels: Channel[] = [
     ctr: 6.4,
     averageViewDuration: "5:42",
     watchHours: 4260,
-    nextMilestone: "Reach 15k subscribers and test sponsor read",
+    nextMilestone: "Reach 15k subscribers with English AI explainers optimized for AdSense RPM",
   },
   {
     id: "creator-money",
@@ -25,7 +25,7 @@ export const channels: Channel[] = [
     ctr: 4.9,
     averageViewDuration: "4:18",
     watchHours: 840,
-    nextMilestone: "Validate affiliate topic cluster",
+    nextMilestone: "Validate affiliate-first topic clusters for English creator audiences",
   },
 ];
 
@@ -74,13 +74,16 @@ export const contentPlans: ContentPlan[] = [
     channelId: "ai-briefs",
     title: "I Built an AI Agent That Finds YouTube Ideas Before They Trend",
     stage: "producing",
+    approvalStatus: "needs_review",
+    autoScheduleAfterApproval: true,
     confidence: 88,
     estimatedViews: "35k-55k",
-    monetizationPath: "AdSense + newsletter lead magnet",
+    monetizationPath: "AdSense + affiliate tool mention",
     publishWindow: "Friday 09:00 local audience time",
     requiredChecks: [
       "Verify trend evidence from at least 3 sources",
       "Human review for claims about earnings",
+      "Affiliate disclosure approved",
       "Thumbnail readability on mobile",
     ],
   },
@@ -89,9 +92,11 @@ export const contentPlans: ContentPlan[] = [
     channelId: "creator-money",
     title: "The YouTube Niches With High RPM But Low Competition",
     stage: "researching",
+    approvalStatus: "draft",
+    autoScheduleAfterApproval: true,
     confidence: 79,
     estimatedViews: "12k-24k",
-    monetizationPath: "Affiliate tools + sponsorship prospecting",
+    monetizationPath: "AdSense + affiliate tool stack",
     publishWindow: "Tuesday 12:00 local audience time",
     requiredChecks: [
       "Avoid unverifiable income guarantees",
@@ -104,6 +109,8 @@ export const contentPlans: ContentPlan[] = [
     channelId: "creator-money",
     title: "Can Shorts Actually Make Money? A Funnel-Based Answer",
     stage: "scheduled",
+    approvalStatus: "scheduled",
+    autoScheduleAfterApproval: true,
     confidence: 82,
     estimatedViews: "20k-40k",
     monetizationPath: "AdSense + affiliate comparison page",
@@ -120,7 +127,7 @@ export const safetyChecks: SafetyCheck[] = [
   {
     area: "YouTube policy",
     status: "needs_review",
-    detail: "Automation should draft and schedule only after a human approves claims, sources, and monetization disclosures.",
+    detail: "Automation may schedule only after a human approves claims, sources, metadata, and affiliate disclosures.",
   },
   {
     area: "Secrets",
