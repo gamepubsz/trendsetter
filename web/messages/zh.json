@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "title": "Trendsetter 工作台",
+    "description": "本地优先的 YouTube 工作室：趋势、选题与运营。"
+  },
+  "nav": {
+    "dashboard": "控制台",
+    "brand": "Trendsetter"
+  },
+  "dashboard": {
+    "headline": "频道总览",
+    "sub": "内容面向英文观众；数据与 OAuth 仅保存在本机。",
+    "connect": "连接 YouTube",
+    "checkingApi": "正在检查 API…",
+    "apiDown": "无法连接后端。请在 8000 端口启动 API。",
+    "connectionTitle": "YouTube 连接",
+    "connected": "已连接",
+    "notConnected": "未连接",
+    "channelsTitle": "你的频道",
+    "noChannels": "暂无频道数据（或仍在加载）。",
+    "trendsTitle": "跨平台趋势",
+    "trendsBody": "规划中：仅使用官方 API 与公开元数据，不做灰色抓取。",
+    "editTitle": "自动剪辑流水线",
+    "editBody": "规划中：Whisper 字幕、FFmpeg 粗剪、导出可导入剪辑工程。",
+    "oauthNote": "OAuth 会在当前窗口跳转 Google；令牌保存在本机 SQLite。",
+    "queryHint": "URL 参数：youtube=connected | youtube=error | youtube=no_refresh",
+    "oauthError": "Google OAuth 出错。",
+    "oauthNoRefresh": "未拿到 refresh token：请在 Google 账号中移除本应用授权后重新连接。"
+  },
+  "locale": {
+    "switch": "English"
+  }
+}

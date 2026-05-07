@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "title": "Trendsetter Studio",
+    "description": "Local-first YouTube studio: trends, ideas, and ops."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "brand": "Trendsetter"
+  },
+  "dashboard": {
+    "headline": "Channel overview",
+    "sub": "English-first content strategy. Connect YouTube to load your channels (read-only).",
+    "connect": "Connect YouTube",
+    "checkingApi": "Checking API…",
+    "apiDown": "Backend unreachable. Start the API on port 8000.",
+    "connectionTitle": "YouTube connection",
+    "connected": "Connected",
+    "notConnected": "Not connected",
+    "channelsTitle": "Your channels",
+    "noChannels": "No channels returned (or still loading).",
+    "trendsTitle": "Cross-platform trends",
+    "trendsBody": "Planned: compliant feeds only (official APIs and public metadata). No grey scraping.",
+    "editTitle": "Auto edit pipeline",
+    "editBody": "Planned: Whisper transcripts, FFmpeg cuts, export to an editor-friendly format.",
+    "oauthNote": "OAuth opens Google in this window. Tokens stay in your local SQLite database.",
+    "queryHint": "URL flags: youtube=connected | youtube=error | youtube=no_refresh",
+    "oauthError": "OAuth error from Google.",
+    "oauthNoRefresh": "No refresh token. In Google Account settings, remove this app’s access and connect again."
+  },
+  "locale": {
+    "switch": "中文"
+  }
+}
