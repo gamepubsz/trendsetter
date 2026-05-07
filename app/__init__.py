@@ -1,0 +1,1 @@
+"""Trendsetter MVP package."""
