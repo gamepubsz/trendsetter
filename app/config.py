@@ -8,6 +8,9 @@ class Settings(BaseSettings):
     daily_token_budget: int = 120_000
     per_request_token_cap: int = 6_000
     cache_ttl_seconds: int = 1_800
+    default_language: str = "en-US"
+    default_trend_source: str = "youtube"
+    default_monetization_priorities: str = "ads,affiliate"
 
     model_config = SettingsConfigDict(env_prefix="TRENDSETTER_", extra="ignore")
 

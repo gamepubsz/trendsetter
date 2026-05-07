@@ -48,6 +48,7 @@ class SecurityGuard:
             "app/services/trend_engine.py",
             "app/services/content_copilot.py",
             "app/services/analytics_engine.py",
+            "app/services/publishing_scheduler.py",
             "streamlit_app.py",
             "requirements.txt",
         ]

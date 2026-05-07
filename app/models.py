@@ -5,6 +5,7 @@ from pydantic import BaseModel, Field
 
 
 SupportedPlatform = Literal["youtube", "tiktok", "x", "reddit", "google_trends"]
+MonetizationChannel = Literal["ads", "affiliate", "sponsorship", "digital_products"]
 
 
 class TrendSignal(BaseModel):
@@ -29,7 +30,7 @@ class ChannelProfile(BaseModel):
     channel_id: str
     name: str
     niche: str
-    language: str = "zh-CN"
+    language: str = "en-US"
     target_market: str = "global"
 
 
@@ -43,6 +44,8 @@ class ContentPlan(BaseModel):
     publish_window: str
     token_usage_estimate: int
     model_tier: Literal["small", "large"]
+    monetization_focus: list[MonetizationChannel] = Field(default_factory=lambda: ["ads", "affiliate"])
+    monetization_hooks: list[str] = Field(default_factory=list)
 
 
 class AnalyticsSnapshot(BaseModel):
@@ -61,6 +64,7 @@ class ChannelDiagnosis(BaseModel):
     channel_id: str
     health_score: float = Field(ge=0, le=100)
     monetization_score: float = Field(ge=0, le=100)
+    monetization_priorities: list[MonetizationChannel] = Field(default_factory=lambda: ["ads", "affiliate"])
     priority_actions: list[str]
     risks: list[str]
 
@@ -70,3 +74,19 @@ class SecurityAuditReport(BaseModel):
     leaked_secrets: list[str]
     dependency_alerts: list[str]
     request_hardening_enabled: bool
+
+
+class PublicationRequest(BaseModel):
+    channel_id: str
+    video_title: str
+    planned_publish_at: datetime
+    review_approved: bool = False
+
+
+class ScheduledPublication(BaseModel):
+    schedule_id: str
+    channel_id: str
+    video_title: str
+    planned_publish_at: datetime
+    review_status: Literal["pending", "approved"]
+    automation_status: Literal["waiting_review", "scheduled"]

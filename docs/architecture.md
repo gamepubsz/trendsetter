@@ -7,6 +7,12 @@ Build a practical control center for one or more YouTube channels:
 - operations and monetization diagnostics
 - token cost control and code/security checks
 
+Default operator profile in this MVP:
+- English-first workflow
+- YouTube-first trend ingestion
+- Review-gated auto scheduling for publishing
+- Monetization priorities set to ads and affiliate
+
 ## Components
 
 1. **Trend Engine**
@@ -22,13 +28,18 @@ Build a practical control center for one or more YouTube channels:
 3. **Analytics Engine**
    - Scores channel health and monetization potential.
    - Emits prioritized next actions and risk flags.
+   - Accepts explicit monetization priorities (ads, affiliate, sponsorship, digital products).
 
-4. **Security Guard**
+4. **Publishing Scheduler**
+   - Stores publish jobs in an in-memory queue.
+   - Enforces review-gated flow (`waiting_review` -> `scheduled`).
+
+5. **Security Guard**
    - Basic secret pattern scanning.
    - Checks project completeness via required-file audit.
    - Flags unpinned dependencies in requirements.
 
-5. **Interfaces**
+6. **Interfaces**
    - FastAPI backend (`app/main.py`) for API consumers.
    - Streamlit dashboard (`streamlit_app.py`) for operations view.
 

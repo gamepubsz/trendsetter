@@ -9,6 +9,12 @@ Trendsetter is an MVP toolkit for building and monetizing one or more YouTube ch
 - token budget controls
 - basic code completeness and security audit checks
 
+Current default strategy profile:
+- language priority: **English (`en-US`)**
+- trend source priority: **YouTube-first**
+- publishing flow: **review-gated auto scheduling**
+- monetization priorities: **ads + affiliate**
+
 ## Quick start
 
 ```bash
@@ -29,6 +35,9 @@ Useful endpoints:
 - `POST /trends/analyze`
 - `POST /content/plan`
 - `POST /analytics/diagnose`
+- `POST /publishing/schedule`
+- `POST /publishing/approve/{schedule_id}`
+- `GET /publishing/schedules`
 - `GET /security/audit`
 - `GET /dashboard/summary`
 
