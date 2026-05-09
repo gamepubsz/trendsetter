@@ -1,0 +1,4 @@
+{
+  "desc": "friendship quiz mini program",
+  "rules": [{ "action": "allow", "page": "*" }]
+}

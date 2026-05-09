@@ -1,0 +1,27 @@
+<view class="page safe-area fade-in-up">
+  <view class="hero card card--dark">
+    <view class="badge">SBTI · 友情版</view>
+    <view class="title-xl">你们是什么类型的朋友圈？</view>
+    <view class="subtitle">测出你们的友情人格 · 纯属娱乐</view>
+
+    <view class="picker-block">
+      <view class="picker-label">参与人数</view>
+      <picker
+        mode="selector"
+        range="{{participantLabels}}"
+        value="{{pickerIndex}}"
+        bindchange="onParticipantChange"
+      >
+        <view class="picker-value">
+          <text class="picker-num">{{groupSize}}</text>
+          <text class="picker-unit">人</text>
+          <text class="picker-hint">点击修改</text>
+        </view>
+      </picker>
+    </view>
+
+    <view class="btn-primary" bindtap="onStart">START 开始测验</view>
+  </view>
+
+  <view class="footer-hint">适合 2–10 人一起填报 · 题目为示意表述</view>
+</view>
