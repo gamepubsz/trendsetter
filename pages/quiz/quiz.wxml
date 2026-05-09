@@ -1,0 +1,46 @@
+<view class="page safe-area fade-in-up">
+  <view class="card card--dark quiz-card">
+    <view class="quiz-meta">
+      <text class="quiz-tag">第 {{index + 1}} / {{total}} 题</text>
+    </view>
+
+    <view class="progress-wrap">
+      <view class="progress-track">
+        <view class="progress-fill" style="width: {{progressPercent}}%;"></view>
+      </view>
+    </view>
+
+    <view class="question-text">{{question.text}}</view>
+    <view class="question-hint">
+      填写「有多少人」符合描述（0–{{groupSize}}）
+    </view>
+
+    <view class="answer-panel">
+      <view class="answer-row">
+        <text class="answer-big">{{answer}}</text>
+        <text class="answer-unit">人</text>
+      </view>
+      <slider
+        class="answer-slider"
+        min="0"
+        max="{{sliderMax}}"
+        step="1"
+        value="{{answer}}"
+        activeColor="#7c3aed"
+        backgroundColor="#e9d5ff"
+        block-size="28"
+        bindchange="onAnswerSliderChange"
+      />
+      <picker
+        mode="selector"
+        range="{{answerLabels}}"
+        value="{{answer}}"
+        bindchange="onAnswerPickerChange"
+      >
+        <view class="picker-fallback">或用列表选择人数</view>
+      </picker>
+    </view>
+
+    <view class="btn-primary" bindtap="onNext">{{nextLabel}}</view>
+  </view>
+</view>

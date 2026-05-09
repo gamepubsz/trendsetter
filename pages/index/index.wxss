@@ -1,0 +1,67 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.hero {
+  margin-top: 16rpx;
+}
+
+.badge {
+  display: inline-block;
+  padding: 8rpx 20rpx;
+  margin-bottom: 24rpx;
+  font-size: 22rpx;
+  font-weight: 700;
+  color: #7c3aed;
+  background: rgba(124, 58, 237, 0.12);
+  border-radius: 999rpx;
+}
+
+.picker-block {
+  margin-top: 40rpx;
+  padding: 28rpx 24rpx;
+  border-radius: 24rpx;
+  background: linear-gradient(135deg, #f5f3ff 0%, #fdf2f8 100%);
+}
+
+.picker-label {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #4c1d95;
+  margin-bottom: 16rpx;
+}
+
+.picker-value {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.picker-num {
+  font-size: 72rpx;
+  font-weight: 900;
+  color: #1a1030;
+  line-height: 1;
+}
+
+.picker-unit {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #5c5370;
+}
+
+.picker-hint {
+  margin-left: auto;
+  font-size: 24rpx;
+  color: #a78bfa;
+}
+
+.footer-hint {
+  margin-top: 40rpx;
+  text-align: center;
+  font-size: 22rpx;
+  color: rgba(248, 245, 255, 0.55);
+}

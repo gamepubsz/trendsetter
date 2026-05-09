@@ -1,0 +1,76 @@
+page {
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: linear-gradient(165deg, #1a0a2e 0%, #0f0520 42%, #16213e 72%, #1b2838 100%);
+  color: #f8f5ff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica,
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+.safe-area {
+  padding: 48rpx 40rpx calc(48rpx + env(safe-area-inset-bottom));
+}
+
+.card {
+  background: #ffffff;
+  color: #1a1030;
+  border-radius: 32rpx;
+  padding: 48rpx 40rpx;
+  box-shadow: 0 24rpx 60rpx rgba(0, 0, 0, 0.35);
+}
+
+.card--dark {
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.title-xl {
+  font-size: 44rpx;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: 2rpx;
+}
+
+.title-lg {
+  font-size: 36rpx;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin-top: 16rpx;
+  font-size: 28rpx;
+  color: #5c5370;
+  line-height: 1.5;
+}
+
+.btn-primary {
+  margin-top: 48rpx;
+  height: 96rpx;
+  line-height: 96rpx;
+  text-align: center;
+  border-radius: 48rpx;
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(90deg, #7c3aed 0%, #ec4899 50%, #f59e0b 100%);
+  box-shadow: 0 16rpx 40rpx rgba(124, 58, 237, 0.45);
+}
+
+.btn-primary:active {
+  opacity: 0.92;
+  transform: scale(0.98);
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(24rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fade-in-up 0.45s ease-out both;
+}

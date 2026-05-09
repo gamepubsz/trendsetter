@@ -1,0 +1,30 @@
+<view class="page safe-area fade-in-up">
+  <view class="result-hero card card--dark">
+    <view class="result-kicker">你们的友情人格是...</view>
+    <view class="archetype-title">{{archetypeTitle}}</view>
+    <view class="archetype-desc">{{archetypeDesc}}</view>
+    <view class="score-summary">
+      <text class="score-chip">混沌 {{chaos}}</text>
+      <text class="score-chip">和谐 {{harmony}}</text>
+      <text class="score-chip">幽灵 {{ghost}}</text>
+    </view>
+  </view>
+
+  <view class="card card--dark bars-card">
+    <view class="bars-title">分类能量条（分数为比例之和）</view>
+    <block wx:for="{{bars}}" wx:key="key">
+      <view class="bar-row">
+        <view class="bar-label-row">
+          <text class="bar-label">{{item.label}}</text>
+          <text class="bar-score">{{item.scoreText}}</text>
+        </view>
+        <view class="bar-track">
+          <view class="bar-fill" style="width: {{item.percent}}%;"></view>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <view class="btn-primary result-cta" bindtap="onRetry">再测一次</view>
+  <view class="fine-print">本测验仅供娱乐 · 人数 {{groupSize}}</view>
+</view>
