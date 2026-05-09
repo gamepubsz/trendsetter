@@ -118,7 +118,7 @@ Page({
       const chaos = formatScoreParam(nextScores.chaos);
       const harmony = formatScoreParam(nextScores.harmony);
       const ghost = formatScoreParam(nextScores.ghost);
-      wx.navigateTo({
+      wx.redirectTo({
         url: `/pages/result/result?groupSize=${groupSize}&chaos=${chaos}&harmony=${harmony}&ghost=${ghost}`,
       });
       return;
